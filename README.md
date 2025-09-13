@@ -11,3 +11,5 @@
 - `npx @biomejs/biome check --write`
 - `npx @biomejs/biome check --write <files>`
 - `npx @biomejs/biome format --write ./src`
+
+## Client
