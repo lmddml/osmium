@@ -12,7 +12,16 @@
   "license": "ISC",
   "devDependencies": {
     "@biomejs/biome": "2.2.4",
+    "@types/express": "^5.0.3",
     "@types/node": "^24.3.3",
+    "@types/pg": "^8.15.5",
     "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.2",
+    "drizzle-kit": "^1.0.0-beta.1-f92627f",
+    "drizzle-orm": "^1.0.0-beta.1-f92627f",
+    "express": "^5.1.0",
+    "pg": "^8.16.3"
   }
 }
