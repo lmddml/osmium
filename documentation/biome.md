@@ -25,3 +25,5 @@ Next Steps
   5. Get involved with the community
      Ask questions and contribute on GitHub: https://github.com/biomejs/biome
      Seek for help on Discord: https://biomejs.dev/chat
+
+     npx @biomejs/biome check --formatter-enabled=false --linter-enabled=false --write .\src\customer\customerRoutes.ts
