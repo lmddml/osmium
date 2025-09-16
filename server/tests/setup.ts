@@ -1,6 +1,5 @@
 import type { Server } from "node:net";
 import { buildApp } from "../src/app.ts";
-import { db } from "../src/db/db.ts";
 
 let server: Server;
 
@@ -11,7 +10,7 @@ export async function globalSetup() {
 }
 
 export async function globalTeardown() {
-//	await db.$client.end();
+	//	await db.$client.end();
 	server.close();
 	//console.log("Global teardown executed");
 }
