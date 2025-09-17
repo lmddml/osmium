@@ -1,4 +1,5 @@
 import {
+	customType,
 	integer,
 	numeric,
 	pgTable,
@@ -8,6 +9,16 @@ import {
 	uuid,
 	varchar,
 } from "drizzle-orm/pg-core";
+
+export const customNumeric = (name: string) =>
+	customType<{ data: number; driverData: string }>({
+		dataType() {
+			return "numeric";
+		},
+		fromDriver(value: string): number {
+			return Number(value);
+		},
+	})(name);
 
 export const examples = pgTable("examples", {
 	id: uuid().primaryKey().defaultRandom(),
@@ -44,7 +55,7 @@ export const articles = pgTable("articles", {
 	articleNumber: varchar("article_number", { length: 255 }).notNull().unique(),
 	name: varchar({ length: 255 }).notNull(),
 	description: varchar({ length: 255 }).notNull(),
-	price: varchar({ length: 255 }).notNull(),
+	price: customNumeric("price"),
 	unitId: uuid("unit_id").references(() => units.id),
 });
 
@@ -59,15 +70,14 @@ export const orders = pgTable("orders", {
 	orderNumber: varchar("order_number", { length: 255 }).notNull().unique(),
 	customerId: uuid("customer_id").references(() => customers.id),
 	orderDate: timestamp({ withTimezone: true }),
-	totalAmount: numeric().notNull(),
 });
 
 export const orderItems = pgTable("order_items", {
 	id: uuid().primaryKey().defaultRandom(),
 	orderId: uuid("order_id").references(() => orders.id),
 	articleId: uuid("article_id").references(() => articles.id),
-	quantity: numeric().notNull(),
-	price: numeric().notNull(),
+	quantity: customNumeric("quantity"),
+	price: customNumeric("price"),
 });
 
 export const hours = pgTable("hours", {
