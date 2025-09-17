@@ -1,3 +1,4 @@
+// begin-auto-generated
 import { eq } from "drizzle-orm";
 import { db } from "../db/db.ts";
 import { customers } from "../db/schema.ts";
@@ -10,15 +11,14 @@ export const getCustomers = async () => {
 	return result;
 };
 
-export const getCustomerById = async (id: string) => {
-	const result = await db.query.customers.findFirst({
-		where: { id },
-	});
+export const getCustomerById = async (id: string): Promise<SelectCustomer> => {
+	const [customer] = await db.select().from(customers).where(eq(customers.id, id));
 
-	if (!result) {
+	if (!customer) {
 		throw new Error("Customer not found");
 	}
-	return result;
+	
+	return customer;
 };
 
 export const createCustomer = async (customer: InsertCustomer) => {
@@ -26,7 +26,7 @@ export const createCustomer = async (customer: InsertCustomer) => {
 	if (result.length !== 1) {
 		throw new Error("Customer not created");
 	}
-	return result[0];
+	return result[0] as SelectCustomer;
 };
 
 export const updateCustomer = async (id: string, customer: InsertCustomer) => {
@@ -38,7 +38,7 @@ export const updateCustomer = async (id: string, customer: InsertCustomer) => {
 	if (result.length !== 1) {
 		throw new Error("Customer not updated");
 	}
-	return result[0];
+	return result[0] as SelectCustomer;
 };
 
 export const deleteCustomer = async (id: string) => {
@@ -49,5 +49,6 @@ export const deleteCustomer = async (id: string) => {
 	if (result.length !== 1) {
 		throw new Error("Customer not deleted");
 	}
-	return result[0];
+	return result[0] as SelectCustomer;
 };
+// end-auto-generated

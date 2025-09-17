@@ -1,3 +1,4 @@
+// begin-auto-generated
 import type { Response } from "express";
 import express from "express";
 import type { InsertCustomer, SelectCustomer } from "../types.ts";
@@ -40,3 +41,4 @@ router.delete("/:id", async (req, res: Response<SelectCustomer>) => {
 	const customer = await deleteCustomer(id);
 	res.json(customer);
 });
+// end-auto-generated

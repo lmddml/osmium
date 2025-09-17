@@ -1,3 +1,4 @@
+// begin-auto-generated
 import type { InsertCustomer } from "./customerModel.ts";
 import * as customerModel from "./customerModel.ts";
 
@@ -20,3 +21,4 @@ export const updateCustomer = async (id: string, customer: InsertCustomer) => {
 export const deleteCustomer = async (id: string) => {
 	return await customerModel.deleteCustomer(id);
 };
+// end-auto-generated

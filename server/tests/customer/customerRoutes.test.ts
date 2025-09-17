@@ -1,3 +1,4 @@
+// begin-auto-generated
 import { deepStrictEqual, ok, strictEqual } from "node:assert";
 import test from "node:test";
 import { sql } from "drizzle-orm";
@@ -12,16 +13,7 @@ const createData = async (
 	const insertCustomers: SelectCustomer[] = [];
 
 	for (let i = 0; i < numberOfCustomers; i++) {
-		const customer: InsertCustomer = {
-			name: "John Doe",
-			email: "john.doe@example.com",
-			phone: "1234567890",
-			street: "123 Main St",
-			city: "Anytown",
-			postalCode: "12345",
-			country: "USA",
-			customerNumber: i.toString(),
-		};
+		const customer = createTestCustomer(i.toString());
 		const insertedCustomer = await customerModel.createCustomer(customer);
 		if (!insertedCustomer) {
 			throw new Error("Customer not created");
@@ -47,16 +39,7 @@ test("GET /customers responds with JSON array and status 200", async () => {
 
 test("POST /customers responds with JSON and status 200", async () => {
 	await createData(0);
-	const expectedCustomer: InsertCustomer = {
-		name: "John Doe",
-		email: "john.doe@example.com",
-		phone: "1234567890",
-		street: "123 Main St",
-		city: "Anytown",
-		postalCode: "12345",
-		country: "USA",
-		customerNumber: "1",
-	};
+	const expectedCustomer = createTestCustomer("1");
 	const response = await fetch("http://localhost:3001/customers", {
 		method: "POST",
 		headers: { "Content-Type": "application/json" },
@@ -116,3 +99,18 @@ test("DELETE /customers/:id responds with JSON and status 200", async () => {
 	const customers = await customerModel.getCustomers();
 	strictEqual(customers.length, 0);
 });
+// end-auto-generated
+
+const createTestCustomer = (suffix: string): InsertCustomer => {
+	const customer: InsertCustomer = {
+		name: "John Doe",
+		email: "john.doe@example.com",
+		phone: "1234567890",
+		street: "123 Main St",
+		city: "Anytown",
+		postalCode: "12345",
+		country: "USA",
+		customerNumber: suffix,
+	};
+	return customer;
+};
