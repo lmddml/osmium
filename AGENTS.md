@@ -7,6 +7,7 @@
 - You work from the server folder (`cd server`).
 - Test app: `npm test`.
 - You can't run the app. Currently only testing supported.
+- Before running tests, run `npm run check-write` to fix any biome warnings.
 
 ## Code style
 - TypeScript strict mode
