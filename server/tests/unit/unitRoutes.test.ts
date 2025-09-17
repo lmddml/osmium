@@ -2,13 +2,11 @@
 import { deepStrictEqual, ok, strictEqual } from "node:assert";
 import test from "node:test";
 import { sql } from "drizzle-orm";
-import * as unitModel from "../../src/unit/unitModel.ts";
 import { db } from "../../src/db/db.ts";
 import type { InsertUnit, SelectUnit } from "../../src/types.ts";
+import * as unitModel from "../../src/unit/unitModel.ts";
 
-const createData = async (
-	numberOfUnits: number,
-): Promise<SelectUnit[]> => {
+const createData = async (numberOfUnits: number): Promise<SelectUnit[]> => {
 	await db.execute(sql`delete from units`);
 	const insertUnits: SelectUnit[] = [];
 
@@ -47,8 +45,7 @@ test("POST /units responds with JSON and status 200", async () => {
 	});
 	strictEqual(response.status, 200);
 	ok(response.headers.get("content-type")?.includes("application/json"));
-	const { id: _id, ...actualUnit } =
-		(await response.json()) as SelectUnit;
+	const { id: _id, ...actualUnit } = (await response.json()) as SelectUnit;
 
 	deepStrictEqual(expectedUnit, actualUnit);
 });

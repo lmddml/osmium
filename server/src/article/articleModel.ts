@@ -17,7 +17,7 @@ export const getArticleById = async (id: string): Promise<SelectArticle> => {
 	if (!article) {
 		throw new Error("Article not found");
 	}
-	
+
 	return article;
 };
 

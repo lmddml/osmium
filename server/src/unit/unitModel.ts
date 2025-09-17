@@ -17,7 +17,7 @@ export const getUnitById = async (id: string): Promise<SelectUnit> => {
 	if (!unit) {
 		throw new Error("Unit not found");
 	}
-	
+
 	return unit;
 };
 
@@ -42,10 +42,7 @@ export const updateUnit = async (id: string, unit: InsertUnit) => {
 };
 
 export const deleteUnit = async (id: string) => {
-	const result = await db
-		.delete(units)
-		.where(eq(units.id, id))
-		.returning();
+	const result = await db.delete(units).where(eq(units.id, id)).returning();
 	if (result.length !== 1) {
 		throw new Error("Unit not deleted");
 	}

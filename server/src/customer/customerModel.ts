@@ -12,12 +12,15 @@ export const getCustomers = async () => {
 };
 
 export const getCustomerById = async (id: string): Promise<SelectCustomer> => {
-	const [customer] = await db.select().from(customers).where(eq(customers.id, id));
+	const [customer] = await db
+		.select()
+		.from(customers)
+		.where(eq(customers.id, id));
 
 	if (!customer) {
 		throw new Error("Customer not found");
 	}
-	
+
 	return customer;
 };
 
