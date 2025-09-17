@@ -1,7 +1,6 @@
 import {
 	customType,
 	integer,
-	numeric,
 	pgTable,
 	text,
 	time,

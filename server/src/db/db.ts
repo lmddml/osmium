@@ -4,7 +4,9 @@ import { drizzle } from "drizzle-orm/node-postgres";
 import { relations } from "./relations.ts";
 
 const pool = new Pool({
-	connectionString: process.env.DATABASE_URL,
+	connectionString:
+		process.env.DATABASE_URL ||
+		"postgres://postgres:example@localhost:5432/postgres",
 	allowExitOnIdle: true,
 });
 

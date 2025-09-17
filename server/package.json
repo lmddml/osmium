@@ -7,7 +7,8 @@
   "scripts": {
     "test": "node --test-global-setup ./tests/setup.ts --test",
     "check": "biome check .",
-    "check-write": "biome check . --write"
+    "check-write": "biome check . --write",
+    "drizzle": "drizzle-kit push"
   },
   "keywords": [],
   "author": "",
