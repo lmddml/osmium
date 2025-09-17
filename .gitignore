@@ -145,3 +145,7 @@ server/pgdata
 # Testing - Testing is not for the tests. It is more for prototyping and testing new ideas.
 
 testing
+
+# Drizzle
+
+server/drizzle
