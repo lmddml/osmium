@@ -1,9 +1,9 @@
 // begin-auto-generated
-import type { InsertCustomer } from "./customerModel.ts";
+import type { InsertCustomer, QueryCustomer } from "../types.ts";
 import * as customerModel from "./customerModel.ts";
 
-export const getCustomers = async () => {
-	return await customerModel.getCustomers();
+export const getCustomers = async (query: QueryCustomer) => {
+	return await customerModel.getCustomers(query);
 };
 
 export const createCustomer = async (customer: InsertCustomer) => {

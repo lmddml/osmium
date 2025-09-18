@@ -1,7 +1,11 @@
 // begin-auto-generated
 import type { Response } from "express";
 import express from "express";
-import type { InsertCustomer, SelectCustomer } from "../types.ts";
+import type {
+	InsertCustomer,
+	QueryCustomer,
+	SelectCustomer,
+} from "../types.ts";
 import {
 	createCustomer,
 	deleteCustomer,
@@ -12,8 +16,40 @@ import {
 
 export const router = express.Router();
 
-router.get("/", async (_req, res: Response<SelectCustomer[]>) => {
-	const customers = await getCustomers();
+router.get("/", async (req, res: Response<SelectCustomer[]>) => {
+	const {
+		page,
+		perPage,
+		id,
+		name,
+		customerNumber,
+		street,
+		city,
+		postalCode,
+		country,
+		email,
+		phone,
+	} = req.query;
+
+	const query: QueryCustomer = {
+		page: page === undefined ? undefined : parseInt(page as string, 10),
+		perPage:
+			perPage === undefined ? undefined : parseInt(perPage as string, 10),
+		filter: {
+			id: typeof id === "string" ? id : undefined,
+			name: typeof name === "string" ? name : undefined,
+			customerNumber:
+				typeof customerNumber === "string" ? customerNumber : undefined,
+			street: typeof street === "string" ? street : undefined,
+			city: typeof city === "string" ? city : undefined,
+			postalCode: typeof postalCode === "string" ? postalCode : undefined,
+			country: typeof country === "string" ? country : undefined,
+			email: typeof email === "string" ? email : undefined,
+			phone: typeof phone === "string" ? phone : undefined,
+		},
+	};
+
+	const customers = await getCustomers(query);
 	res.json(customers);
 });
 

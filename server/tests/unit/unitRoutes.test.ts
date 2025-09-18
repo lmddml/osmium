@@ -93,7 +93,7 @@ test("DELETE /units/:id responds with JSON and status 200", async () => {
 	ok(response.headers.get("content-type")?.includes("application/json"));
 	const actualUnit = (await response.json()) as SelectUnit;
 	deepStrictEqual(expectedUnit, actualUnit);
-	const units = await unitModel.getUnits();
+	const units = await unitModel.getUnits({});
 	strictEqual(units.length, 0);
 });
 // end-auto-generated

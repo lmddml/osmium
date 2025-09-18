@@ -1,7 +1,7 @@
 // begin-auto-generated
 import type { Response } from "express";
 import express from "express";
-import type { InsertArticle, SelectArticle } from "./articleService.ts";
+import type { InsertArticle, QueryArticle, SelectArticle } from "../types.ts";
 import {
 	createArticle,
 	deleteArticle,
@@ -12,26 +12,32 @@ import {
 
 export const router = express.Router();
 
-const toInsertArticle = (payload: unknown): InsertArticle => {
-	const { articleNumber, name, description, price, unitId } = (payload ??
-		{}) as InsertArticle;
+router.get("/", async (req, res: Response<SelectArticle[]>) => {
+	const { page, perPage, id, articleNumber, name, description, price, unitId } =
+		req.query;
 
-	return {
-		articleNumber,
-		name,
-		description,
-		price,
-		unitId,
+	const query: QueryArticle = {
+		page: page === undefined ? undefined : parseInt(page as string, 10),
+		perPage:
+			perPage === undefined ? undefined : parseInt(perPage as string, 10),
+		filter: {
+			id: typeof id === "string" ? id : undefined,
+			articleNumber:
+				typeof articleNumber === "string" ? articleNumber : undefined,
+			name: typeof name === "string" ? name : undefined,
+			description: typeof description === "string" ? description : undefined,
+			price: typeof price === "string" ? parseFloat(price) : undefined,
+			unitId: typeof unitId === "string" ? unitId : undefined,
+		},
 	};
-};
 
-router.get("/", async (_req, res: Response<SelectArticle[]>) => {
-	const articles = await getArticles();
+	const articles = await getArticles(query);
 	res.json(articles);
 });
 
 router.post("/", async (req, res: Response<SelectArticle>) => {
-	const article = await createArticle(toInsertArticle(req.body));
+	const result: InsertArticle = req.body;
+	const article = await createArticle(result);
 	res.json(article);
 });
 
@@ -43,7 +49,8 @@ router.get("/:id", async (req, res: Response<SelectArticle>) => {
 
 router.put("/:id", async (req, res: Response<SelectArticle>) => {
 	const id = req.params.id;
-	const article = await updateArticle(id, toInsertArticle(req.body));
+	const result: InsertArticle = req.body;
+	const article = await updateArticle(id, result);
 	res.json(article);
 });
 

@@ -22,6 +22,22 @@ export type SelectCustomer = {
 	phone: string;
 };
 
+export type QueryCustomer = {
+	page?: number | undefined;
+	perPage?: number | undefined;
+	filter?: {
+		id?: string | undefined;
+		name?: string | undefined;
+		customerNumber?: string | undefined;
+		street?: string | undefined;
+		city?: string | undefined;
+		postalCode?: string | undefined;
+		country?: string | undefined;
+		email?: string | undefined;
+		phone?: string | undefined;
+	};
+};
+
 // Article
 export type InsertArticle = {
 	articleNumber: string;
@@ -50,6 +66,19 @@ export type DetailArticle = {
 	unit: SelectUnit | null;
 };
 
+export type QueryArticle = {
+	page?: number | undefined;
+	perPage?: number | undefined;
+	filter?: {
+		id?: string | undefined;
+		articleNumber?: string | undefined;
+		name?: string | undefined;
+		description?: string | undefined;
+		price?: number | undefined;
+		unitId?: string | undefined;
+	};
+};
+
 // Unit
 export type InsertUnit = {
 	name: string;
@@ -60,6 +89,16 @@ export type SelectUnit = {
 	id: string;
 	name: string;
 	description: string;
+};
+
+export type QueryUnit = {
+	page?: number | undefined;
+	perPage?: number | undefined;
+	filter?: {
+		id?: string | undefined;
+		name?: string | undefined;
+		description?: string | undefined;
+	};
 };
 
 // Order
@@ -82,6 +121,17 @@ export type DetailOrder = {
 	customerId: string | null;
 	customer: SelectCustomer | null;
 	orderDate: string;
+};
+
+export type QueryOrder = {
+	page?: number | undefined;
+	perPage?: number | undefined;
+	filter?: {
+		id?: string | undefined;
+		orderNumber?: string | undefined;
+		customerId?: string | undefined;
+		orderDate?: string | undefined;
+	};
 };
 
 // OrderItem
@@ -107,4 +157,16 @@ export type DetailOrderItem = {
 	article: DetailArticle | null;
 	quantity: number | null;
 	price: number | null;
+};
+
+export type QueryOrderItem = {
+	page?: number | undefined;
+	perPage?: number | undefined;
+	filter?: {
+		id?: string | undefined;
+		orderId?: string | undefined;
+		articleId?: string | undefined;
+		quantity?: number | undefined;
+		price?: number | undefined;
+	};
 };

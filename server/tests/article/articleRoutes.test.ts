@@ -2,12 +2,13 @@
 import { deepStrictEqual, ok, strictEqual } from "node:assert";
 import test from "node:test";
 import { sql } from "drizzle-orm";
-import type {
-	InsertArticle,
-	SelectArticle,
-} from "../../src/article/articleModel.ts";
 import * as articleModel from "../../src/article/articleModel.ts";
 import { db } from "../../src/db/db.ts";
+import type {
+	DetailArticle,
+	InsertArticle,
+	SelectArticle,
+} from "../../src/types.ts";
 
 const createData = async (
 	numberOfArticles: number,
@@ -18,7 +19,10 @@ const createData = async (
 	for (let i = 0; i < numberOfArticles; i++) {
 		const article = createTestArticle(i.toString());
 		const insertedArticle = await articleModel.createArticle(article);
-		insertArticles.push(insertedArticle);
+		if (!insertedArticle) {
+			throw new Error("Article not created");
+		}
+		insertArticles.push({ id: insertedArticle.id, ...article });
 	}
 
 	return insertArticles;
@@ -31,11 +35,10 @@ test("GET /articles responds with JSON array and status 200", async () => {
 	strictEqual(response.status, 200);
 	ok(response.headers.get("content-type")?.includes("application/json"));
 
-	const data = (await response.json()) as SelectArticle[];
-	const _cleanedArticles = data.map(({ id, ...rest }) => rest);
-	console.log(data);
-	console.log(newArticles);
-	deepStrictEqual(data, newArticles);
+	const data = (await response.json()) as DetailArticle[];
+	const _cleanedArticles = data.map(({ unit, ...rest }) => rest);
+
+	deepStrictEqual(_cleanedArticles, newArticles);
 });
 
 test("POST /articles responds with JSON and status 200", async () => {
@@ -48,16 +51,10 @@ test("POST /articles responds with JSON and status 200", async () => {
 	});
 	strictEqual(response.status, 200);
 	ok(response.headers.get("content-type")?.includes("application/json"));
-	const actualArticle = (await response.json()) as SelectArticle;
+	const { id: _id, ...actualArticle } =
+		(await response.json()) as SelectArticle;
 
-	strictEqual(actualArticle.unit, null);
-	const {
-		id: _id,
-		unit: _unit,
-		...actualArticleWithoutIdAndUnit
-	} = actualArticle;
-
-	deepStrictEqual(expectedArticle, actualArticleWithoutIdAndUnit);
+	deepStrictEqual(expectedArticle, actualArticle);
 });
 
 test("GET /articles/:id responds with JSON and status 200", async () => {
@@ -78,18 +75,11 @@ test("PUT /articles/:id responds with JSON and status 200", async () => {
 	strictEqual(expectedArticles.length, 1);
 	const expectedArticle = expectedArticles[0] as SelectArticle;
 	const id = expectedArticle.id;
-	const updatePayload: InsertArticle = {
-		articleNumber: expectedArticle.articleNumber,
-		name: expectedArticle.name,
-		description: expectedArticle.description,
-		price: expectedArticle.price,
-		unitId: expectedArticle.unitId,
-	};
 
 	const response = await fetch(`http://localhost:3001/articles/${id}`, {
 		method: "PUT",
 		headers: { "Content-Type": "application/json" },
-		body: JSON.stringify(updatePayload),
+		body: JSON.stringify(expectedArticle),
 	});
 	strictEqual(response.status, 200);
 	ok(response.headers.get("content-type")?.includes("application/json"));
@@ -110,7 +100,7 @@ test("DELETE /articles/:id responds with JSON and status 200", async () => {
 	ok(response.headers.get("content-type")?.includes("application/json"));
 	const actualArticle = (await response.json()) as SelectArticle;
 	deepStrictEqual(expectedArticle, actualArticle);
-	const articles = await articleModel.getArticles();
+	const articles = await articleModel.getArticles({});
 	strictEqual(articles.length, 0);
 });
 // end-auto-generated

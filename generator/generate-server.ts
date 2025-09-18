@@ -4,11 +4,13 @@ import { join } from "node:path";
 interface EndpointConfig {
   name: string;
   namePlural: string;
+  filterKeys: string[];
+  withKeys: string[];
 }
 
 const endpoints: EndpointConfig[] = [
-  { name: "unit", namePlural: "units" },
-  { name: "article", namePlural: "articles" },
+  { name: "unit", namePlural: "units", filterKeys: ["id", "name", "description"], withKeys: [] },
+  { name: "article", namePlural: "articles", filterKeys: ["id", "name"], withKeys: ["unit"] },
 ];
 
 async function generateEndpointFiles(endpoint: EndpointConfig) {
@@ -40,9 +42,12 @@ async function generateEndpointFiles(endpoint: EndpointConfig) {
       let newContent = sourceContent
         .replace(/customer/g, endpoint.name)
         .replace(/Customer/g, endpoint.name.charAt(0).toUpperCase() + endpoint.name.slice(1))
-        .replace(/customers/g, endpoint.namePlural);
-      
-      // Extract the auto-generated section from the new content
+        .replace(/customers/g, endpoint.namePlural)
+        .replace(/\t\tid \/\/ template-id/g, createFilter(endpoint.filterKeys))
+        .replace(/\t\t...\(id !== undefined && { id }\) \/\/ template-id/g, createWhere(endpoint.filterKeys))
+        .replace(/\t\t\/\/ template-with/g, createWith(endpoint.withKeys))
+
+        // Extract the auto-generated section from the new content
       const autoGenMatch = newContent.match(/\/\/ begin-auto-generated[\s\S]*?\/\/ end-auto-generated/);
       if (!autoGenMatch) {
         throw new Error(`Source file ${sourceFile} is missing auto-generated markers`);
@@ -75,6 +80,31 @@ async function generateEndpointFiles(endpoint: EndpointConfig) {
     console.error(`Error processing ${endpoint.name}:`, error);
     throw error;
   }
+}
+
+const createFilter = (filterKeys : string[]) => {
+  const text = filterKeys.map((key) => {
+    return `		${key}`
+  }).join(",\n");
+  return text;
+}
+
+const createWhere = (filterKeys : string[]) => {
+  const text = filterKeys.map((key) => {
+    return `		...(${key} !== undefined && { ${key} })`
+  }).join(",\n");
+  return text;
+}
+
+const createWith = (withKeys : string[]) => {
+  if (withKeys.length === 0) {
+    return "";
+  }
+  
+  const text = withKeys.map((key) => {
+    return `\t\t${key}: true`
+  }).join(",\n");
+  return `\t\twith: {\n\t\t${text}\n\t\t},`;
 }
 
 async function main() {

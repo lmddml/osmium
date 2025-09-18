@@ -1,9 +1,9 @@
 // begin-auto-generated
-import type { InsertUnit } from "./unitModel.ts";
+import type { InsertUnit, QueryUnit } from "../types.ts";
 import * as unitModel from "./unitModel.ts";
 
-export const getUnits = async () => {
-	return await unitModel.getUnits();
+export const getUnits = async (query: QueryUnit) => {
+	return await unitModel.getUnits(query);
 };
 
 export const createUnit = async (unit: InsertUnit) => {

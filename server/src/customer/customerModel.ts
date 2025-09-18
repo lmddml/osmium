@@ -2,20 +2,32 @@
 import { eq } from "drizzle-orm";
 import { db } from "../db/db.ts";
 import { customers } from "../db/schema.ts";
+import type { QueryCustomer } from "../types.ts";
 
 export type InsertCustomer = typeof customers.$inferInsert;
 export type SelectCustomer = typeof customers.$inferSelect;
 
-export const getCustomers = async () => {
-	const result = await db.query.customers.findMany();
-	return result;
+export const getCustomers = async ({
+	page = 1,
+	perPage = 100,
+	filter = {},
+}: QueryCustomer) => {
+	const {
+		id, // template-id
+	} = filter;
+	const where = {
+		...(id !== undefined && { id }), // template-id
+	};
+	return db.query.customers.findMany({
+		// template-with
+		limit: perPage,
+		offset: (page - 1) * perPage,
+		where,
+	});
 };
 
 export const getCustomerById = async (id: string): Promise<SelectCustomer> => {
-	const [customer] = await db
-		.select()
-		.from(customers)
-		.where(eq(customers.id, id));
+	const customer = await db.query.customers.findFirst({ where: { id } });
 
 	if (!customer) {
 		throw new Error("Customer not found");

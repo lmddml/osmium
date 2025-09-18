@@ -96,7 +96,7 @@ test("DELETE /customers/:id responds with JSON and status 200", async () => {
 	ok(response.headers.get("content-type")?.includes("application/json"));
 	const actualCustomer = (await response.json()) as SelectCustomer;
 	deepStrictEqual(expectedCustomer, actualCustomer);
-	const customers = await customerModel.getCustomers();
+	const customers = await customerModel.getCustomers({});
 	strictEqual(customers.length, 0);
 });
 // end-auto-generated

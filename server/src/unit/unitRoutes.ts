@@ -1,7 +1,7 @@
 // begin-auto-generated
 import type { Response } from "express";
 import express from "express";
-import type { InsertUnit, SelectUnit } from "../types.ts";
+import type { InsertUnit, QueryUnit, SelectUnit } from "../types.ts";
 import {
 	createUnit,
 	deleteUnit,
@@ -12,8 +12,21 @@ import {
 
 export const router = express.Router();
 
-router.get("/", async (_req, res: Response<SelectUnit[]>) => {
-	const units = await getUnits();
+router.get("/", async (req, res: Response<SelectUnit[]>) => {
+	const { page, perPage, id, name, description } = req.query;
+
+	const query: QueryUnit = {
+		page: page === undefined ? undefined : parseInt(page as string, 10),
+		perPage:
+			perPage === undefined ? undefined : parseInt(perPage as string, 10),
+		filter: {
+			id: typeof id === "string" ? id : undefined,
+			name: typeof name === "string" ? name : undefined,
+			description: typeof description === "string" ? description : undefined,
+		},
+	};
+
+	const units = await getUnits(query);
 	res.json(units);
 });
 

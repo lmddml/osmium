@@ -2,17 +2,31 @@
 import { eq } from "drizzle-orm";
 import { db } from "../db/db.ts";
 import { units } from "../db/schema.ts";
+import type { QueryUnit } from "../types.ts";
 
 export type InsertUnit = typeof units.$inferInsert;
 export type SelectUnit = typeof units.$inferSelect;
 
-export const getUnits = async () => {
-	const result = await db.query.units.findMany();
-	return result;
+export const getUnits = async ({
+	page = 1,
+	perPage = 100,
+	filter = {},
+}: QueryUnit) => {
+	const { id, name, description } = filter;
+	const where = {
+		...(id !== undefined && { id }),
+		...(name !== undefined && { name }),
+		...(description !== undefined && { description }),
+	};
+	return db.query.units.findMany({
+		limit: perPage,
+		offset: (page - 1) * perPage,
+		where,
+	});
 };
 
 export const getUnitById = async (id: string): Promise<SelectUnit> => {
-	const [unit] = await db.select().from(units).where(eq(units.id, id));
+	const unit = await db.query.units.findFirst({ where: { id } });
 
 	if (!unit) {
 		throw new Error("Unit not found");
