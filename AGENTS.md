@@ -7,6 +7,7 @@
 - You work from the server folder (`cd server`).
 - Test app: `npm test`.
 - You can't run the app. Currently only testing supported.
+- Check whether your typescript types are correct with `npm run tsc-check`
 
 ## Code style
 - TypeScript strict mode
