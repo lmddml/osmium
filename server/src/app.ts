@@ -3,6 +3,7 @@ import express from "express";
 import { router as articleRouter } from "./article/articleRoutes.ts";
 import { router as customerRouter } from "./customer/customerRoutes.ts";
 import { router as unitRouter } from "./unit/unitRoutes.ts";
+import { router as orderRouter } from "./order/orderRoutes.ts";
 
 export const buildApp = (): Express => {
 	const app = express();
@@ -10,5 +11,6 @@ export const buildApp = (): Express => {
 	app.use("/customers", customerRouter);
 	app.use("/articles", articleRouter);
 	app.use("/units", unitRouter);
+	app.use("/orders", orderRouter);
 	return app;
 };

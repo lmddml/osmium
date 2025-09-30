@@ -105,14 +105,14 @@ export type QueryUnit = {
 export type InsertOrder = {
 	orderNumber: string;
 	customerId: string | null;
-	orderDate: string;
+	orderDate: Date | null;
 };
 
 export type SelectOrder = {
 	id: string;
 	orderNumber: string;
 	customerId: string | null;
-	orderDate: string;
+	orderDate: Date | null;
 };
 
 export type DetailOrder = {
@@ -120,7 +120,7 @@ export type DetailOrder = {
 	orderNumber: string;
 	customerId: string | null;
 	customer: SelectCustomer | null;
-	orderDate: string;
+	orderDate: Date | null;
 };
 
 export type QueryOrder = {
@@ -130,7 +130,7 @@ export type QueryOrder = {
 		id?: string | undefined;
 		orderNumber?: string | undefined;
 		customerId?: string | undefined;
-		orderDate?: string | undefined;
+		orderDate?: Date | undefined;
 	};
 };
 

@@ -5,6 +5,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
+    "dev": "node --watch src/server.ts",
     "test": "node --test-global-setup ./tests/setup.ts --test",
     "check": "biome check .",
     "check-write": "biome check . --write",
