@@ -1,6 +1,7 @@
 // begin-auto-generated
 import type { Response } from "express";
 import express from "express";
+import { AppError } from "../errors/AppError.ts";
 import type {
 	InsertCustomer,
 	QueryCustomer,
@@ -62,6 +63,11 @@ router.post("/", async (req, res: Response<SelectCustomer>) => {
 router.get("/:id", async (req, res: Response<SelectCustomer>) => {
 	const id = req.params.id;
 	const customer = await getCustomerById(id);
+
+	if (!customer) {
+		throw new AppError("Customer not found", 404);
+	}
+
 	res.json(customer);
 });
 

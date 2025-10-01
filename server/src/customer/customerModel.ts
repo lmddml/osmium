@@ -26,14 +26,10 @@ export const getCustomers = async ({
 	});
 };
 
-export const getCustomerById = async (id: string): Promise<SelectCustomer> => {
-	const customer = await db.query.customers.findFirst({ where: { id } });
-
-	if (!customer) {
-		throw new Error("Customer not found");
-	}
-
-	return customer;
+export const getCustomerById = async (
+	id: string,
+): Promise<SelectCustomer | undefined> => {
+	return await db.query.customers.findFirst({ where: { id } });
 };
 
 export const createCustomer = async (customer: InsertCustomer) => {
