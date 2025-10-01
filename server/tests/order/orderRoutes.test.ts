@@ -7,6 +7,7 @@ import * as orderModel from "../../src/order/orderModel.ts";
 import type { InsertOrder, SelectOrder } from "../../src/types.ts";
 
 const createData = async (numberOfOrders: number): Promise<SelectOrder[]> => {
+	await db.execute(sql`delete from tasks`);
 	await db.execute(sql`delete from orders`);
 	const insertOrders: SelectOrder[] = [];
 

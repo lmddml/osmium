@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "node --watch src/server.ts",
-    "test": "node --test-global-setup ./tests/setup.ts --test",
+    "test": "node --test-global-setup ./tests/setup.ts --test-concurrency=1 --test",
     "check": "biome check .",
     "check-write": "biome check . --write",
     "drizzle": "drizzle-kit push",

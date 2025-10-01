@@ -89,6 +89,12 @@ export const hours = pgTable("hours", {
 
 export const tasks = pgTable("tasks", {
 	id: uuid().primaryKey().defaultRandom(),
-	orderId: uuid("order_id").references(() => orders.id),
+	orderId: uuid("order_id")
+		.notNull()
+		.references(() => orders.id),
+	position: integer().notNull(),
+	doneAt: timestamp({ withTimezone: true }),
+	name: varchar({ length: 255 }).notNull(),
+	taskNumber: varchar("task_number", { length: 255 }).notNull().unique(),
 	description: varchar({ length: 255 }).notNull(),
 });

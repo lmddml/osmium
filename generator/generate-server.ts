@@ -11,7 +11,8 @@ interface EndpointConfig {
 const endpoints: EndpointConfig[] = [
   // { name: "unit", namePlural: "units", filterKeys: ["id", "name", "description"], withKeys: [] },
   // { name: "article", namePlural: "articles", filterKeys: ["id", "name"], withKeys: ["unit"] },
-  {name: "order", namePlural: "orders", filterKeys: ["id", "name"], withKeys: []}
+  // {name: "order", namePlural: "orders", filterKeys: ["id", "name"], withKeys: []}
+  {name: "task", namePlural: "tasks", filterKeys: ["id", "name"], withKeys: []}
 ];
 
 async function generateEndpointFiles(endpoint: EndpointConfig) {

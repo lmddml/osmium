@@ -170,3 +170,35 @@ export type QueryOrderItem = {
 		price?: number | undefined;
 	};
 };
+
+// Task
+export type InsertTask = {
+	orderId: string;
+	position: number;
+	doneAt: Date | null;
+	name: string;
+	taskNumber: string;
+	description: string;
+};
+
+export type SelectTask = {
+	id: string;
+	orderId: string;
+	position: number;
+	doneAt: Date | null;
+	name: string;
+	taskNumber: string;
+	description: string;
+};
+
+export type QueryTask = {
+	page?: number | undefined;
+	perPage?: number | undefined;
+	filter?: {
+		id?: string | undefined;
+		orderId?: string | undefined;
+		name?: string | undefined;
+		taskNumber?: string | undefined;
+		description?: string | undefined;
+	};
+};
