@@ -9,4 +9,9 @@
 	<link rel="icon" href={favicon} />
 </svelte:head>
 
+<nav>
+	<a href="/">Home</a>
+	<a href="/orders">Arbeitskarten</a>
+</nav>
+
 {@render children?.()}
