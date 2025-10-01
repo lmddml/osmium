@@ -6,7 +6,12 @@
 		"useIgnoreFile": false
 	},
 	"files": {
-		"includes": ["src/**/*.ts", "tests/**/*.test.ts", "tests/setup.ts"]
+		"includes": [
+			"src/**/*.ts",
+			"tests/**/*.test.ts",
+			"tests/setup.ts",
+			"!pgdata"
+		]
 	},
 	"formatter": {
 		"enabled": true,
