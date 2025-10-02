@@ -1,4 +1,6 @@
 // begin-auto-generated
+
+import { AppError } from "../errors/AppError.ts";
 import type { InsertCustomer, QueryCustomer } from "../types.ts";
 import * as customerModel from "./customerModel.ts";
 
@@ -11,7 +13,12 @@ export const createCustomer = async (customer: InsertCustomer) => {
 };
 
 export const getCustomerById = async (id: string) => {
-	return await customerModel.getCustomerById(id);
+	const customer = await customerModel.getCustomerById(id);
+	if (!customer) {
+		throw new AppError("Customer not found", 404);
+	}
+
+	return customer;
 };
 
 export const updateCustomer = async (id: string, customer: InsertCustomer) => {
