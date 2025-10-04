@@ -31,6 +31,8 @@
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     description,
+                    name: "",
+                    taskNumber: 11,
                     position: maxPosition + 1,
                     doneAt,
                     orderId: data.order.id,

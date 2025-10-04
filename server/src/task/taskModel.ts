@@ -14,9 +14,11 @@ export const getTasks = async ({
 }: QueryTask) => {
 	const {
 		id, // template-id
+		orderId
 	} = filter;
 	const where = {
 		...(id !== undefined && { id }), // template-id
+		...(orderId !== undefined && { orderId }),
 	};
 	return db.query.tasks.findMany({
 		limit: perPage,
