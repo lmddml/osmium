@@ -98,3 +98,8 @@ export const tasks = pgTable("tasks", {
 	taskNumber: varchar("task_number", { length: 255 }).notNull().unique(),
 	description: varchar({ length: 255 }).notNull(),
 });
+
+export const numberSequences = pgTable("number_sequences", {
+	name: varchar({ length: 255 }).primaryKey(),
+	lastValue: integer("last_value").notNull(),
+});
